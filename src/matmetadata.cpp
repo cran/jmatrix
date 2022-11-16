@@ -92,15 +92,13 @@ void InternalGetBinNames(std::string fname,unsigned char whichnames,std::vector<
   }
   return;
  }
+  
+ unsigned long long start_metadata,start_comment;
+ PositionsInFile(fname,&start_metadata,&start_comment);
  
- unsigned long long endofbindata;
- 
- // Open the binary file, go just before its end and read the number that indicates where the metadata start
- std::ifstream f(fname.c_str());
- f.seekg(-sizeof(unsigned long long),std::ios::end);
- f.read((char *)&endofbindata,sizeof(unsigned long long));
  // Then, position the stream at the beginning of the metadata
- f.seekg(endofbindata,std::ios::beg);
+ std::ifstream f(fname.c_str());
+ f.seekg(start_metadata,std::ios::beg);
  if (whichnames & ROW_NAMES)
  {
   if (RNames(f,rnames) == ERROR_READING_STRINGS)
@@ -114,7 +112,7 @@ void InternalGetBinNames(std::string fname,unsigned char whichnames,std::vector<
  else
  {
   // Row names are before column names in binary file. This obligues us to read them, if they are there, even if the caller did not ask for them.
-  // But in this case parametr rnames will not be altered
+  // But in this case parameter rnames will not be altered
   if (mdinfo & ROW_NAMES)
   {
    std::vector<std::string> dummy;

@@ -2,7 +2,7 @@ Package: jmatrix
 Type: Package
 Title: Read from/Write to Disk Matrices with any Data Type in a Binary
         Format
-Version: 1.0
+Version: 1.1
 Date: 2022-10-30
 Author: Juan Domingo [aut, cre] (<https://orcid.org/0000-0003-4728-6256>),
   Guillermo Ayala [ctb] (<https://orcid.org/0000-0002-6231-2865>),
@@ -29,6 +29,6 @@ Encoding: UTF-8
 Suggests: knitr
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2022-10-31 17:59:46 UTC; jdomingo
+Packaged: 2022-11-09 11:58:48 UTC; jdomingo
 Repository: CRAN
-Date/Publication: 2022-11-01 08:30:12 UTC
+Date/Publication: 2022-11-16 14:30:02 UTC

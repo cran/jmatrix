@@ -45,12 +45,40 @@ void MatrixType(std::string fname,unsigned char &mtype,unsigned char &ctype,unsi
  mtype=header[0];
  ctype=header[1] & 0x0F;
  endianness=header[1] & 0xF0;
- indextype *t;
- t=(indextype *)(header+2);
+
+ // By doing the assignment in the following lines, t became misalligned to a 4-byte boundary
+ // and g++ for arm64 (and only for THAT architecture) generated a code that provoked runtime error:
+ //
+ // indextype *t;
+ // t=(indextype *)(header+2);
+ //
+ // The following solution should work since it forces t to be aligned, but posix calls might not be available
+ // in all platforms
+ /*
+ indextype *t=(indextype *)aligned_alloc(size_t(sizeof(indextype)),size_t(sizeof(indextype)));
+ if (t == nullptr)
+  Rcpp::stop("You system cannot book space for a variable of 'indextype' (currently, unsigned int) aligned to a boundary of indextype size.\n");
+  
+ memcpy((void *)t,(void *)(header+2),size_t(sizeof(indextype)));
  nrows=*t;
- t=(indextype *)(header+2+sizeof(indextype));
+ memcpy((void *)t,(void *)(header+2+sizeof(indextype)),size_t(sizeof(indextype)));
  ncols=*t;
+ // mdinf is unsigned char so it will not complain about being missaligned
  mdinf=*(header+2+2*sizeof(indextype));
+ */
+ 
+ // Alternatively, this should work in all platforms, assuming the compiler aligns properly simple variable declarations,
+ // i.e. we now use a variable instead of a pointer
+ indextype t=0;              // This should be aligned, I hope..
+ unsigned char *t1;
+ t1=header+2;
+ memcpy((void *)&t,(void *)t1,size_t(sizeof(indextype)));
+ nrows=t;
+ t1=header+2+sizeof(indextype);
+ memcpy((void *)&t,(void *)t1,size_t(sizeof(indextype)));
+ ncols=t;
+ t1=header+2+2*sizeof(indextype);
+ mdinf=*t1;
 }
 
 void MatrixType(std::string fname,unsigned char &mtype,unsigned char &ctype,unsigned char &endianness,unsigned char &mdinf)
@@ -371,14 +399,18 @@ TEMPLATES_CONST(JMatrix,SINGLE_ARG(std::string fname,unsigned char mtype,unsigne
 template <typename T>
 JMatrix<T>::JMatrix( const JMatrix<T>& other )
 {
+ /*
  if (jmtype != other.jmtype)
   Rcpp::stop("Error from assigment operator: trying to assign between different matrix types (full/sparse/symmetric).\n");
  
- jctype = other.jctype;
- 
  if (jctype != other.jctype)
   Rcpp::stop("Error from assigment operator: trying to assign between different matrix _data_ types. Type promotion/conversion is not yet implemented.\n");
-  
+ */
+ 
+ // TODO: check if this can be done better...
+ jmtype = other.jmtype;
+ jctype = other.jctype; 
+ 
  nr=other.nr;
  nc=other.nc;
  mdinfo=other.mdinfo;
@@ -403,9 +435,11 @@ JMatrix<T>& JMatrix<T>::operator= ( const JMatrix<T>& other )
  }
  
  jctype = other.jctype;
- 
+ // TODO: check if this can be done better...
+ /*
  if (jctype != other.jctype)
   Rcpp::stop("Error from assigment operator: trying to assign between different matrix _data_ types. Type promotion/conversion is not yet implemented.\n");
+ */
  
  nr=other.nr;
  nc=other.nc;
@@ -427,10 +461,12 @@ template <typename T>
 JMatrix<T>& JMatrix<T>::operator!= ( const JMatrix<T>& other )
 {
  jctype = other.jctype;
- 
+ // TODO: check if this can be done better...
+ /*
  if (jctype != other.jctype)
   Rcpp::stop("Error from transposition operator: trying to transpose between different matrix _data_ types. Type promotion/conversion is not yet implemented.\n");
-
+ */
+ 
  // Number of rows and columns is swapped
  nr=other.nc;
  nc=other.nr;

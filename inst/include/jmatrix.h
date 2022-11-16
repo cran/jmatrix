@@ -19,6 +19,7 @@
 #ifndef JMATRIX_H
 #define JMATRIX_H
 
+#include <sys/stat.h>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -109,6 +110,25 @@ const unsigned char BLOCKSEP[BLOCKSEP_LEN]={BLOCK_MARK,0x45,0x42,BLOCK_MARK};  /
  * @return unsigned char: either the constant BIGEND or the constant LITEND
  */
 unsigned char ThisMachineEndianness();
+
+/**
+ * Returns the file size of a file in a sufficiently large number (unsigned long long)
+ * in a way (hopefully) independent of the operating system and of the architecture
+ *
+ * @param std::string File path
+ * @return unsigned long long File size
+ */
+unsigned long long GetFileSize(std::string fname);
+
+/**
+ * Returns the positions of the start of metadata and start of comments (included inside metadata)
+ * as absolute positions measured in bytes from the beginning of the file
+ *
+ * @param std::string File path
+ * @param unsigned long long *start_of_metadata
+ * @param unsigned long long *start_of_comment
+ */
+void PositionsInFile(std::string fname,unsigned long long *start_of_metadata,unsigned long long *start_of_comment);
 
 /*! \brief Auxiliary functions to be used for error printing.
  *

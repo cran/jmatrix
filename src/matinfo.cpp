@@ -57,20 +57,17 @@ void JMatInfo(std::string fname, std::string fres = "")
  
  MatrixType(fname,mtype,ctype,endian,mdinfo,nrows,ncols);
  
- unsigned long long endofbindata;
- 
- std::ifstream f(fname.c_str());
- f.seekg(-sizeof(unsigned long long),std::ios::end);
- f.read((char *)&endofbindata,sizeof(unsigned long long));
- 
  char comment[COMMENT_SIZE];
+ unsigned long long start_metadata,start_comment;
+ PositionsInFile(fname,&start_metadata,&start_comment);
+ 
  if (mdinfo & COMMENT)
  {
-  f.seekg(-(COMMENT_SIZE+BLOCKSEP_LEN+sizeof(unsigned long long)),std::ios::cur);
+  std::ifstream f(fname.c_str());
+  f.seekg(start_comment,std::ios::beg);
   f.read((char *)comment,COMMENT_SIZE);
+  f.close();
  }
- 
- f.close();
  
  std::streambuf *buf;
  std::ofstream fr;
@@ -145,8 +142,9 @@ void JMatInfo(std::string fname, std::string fres = "")
   
  if (mtype==MTYPESPARSE)
  {
-     size_t full_size=nrows*ncols*SizeOfType(ctype)+HEADER_SIZE;
-     out << "Binary data size:   " <<  endofbindata-HEADER_SIZE << " bytes, which is " << 100.0*float(endofbindata-HEADER_SIZE)/float(full_size) << "% of the full matrix size.\n";
+     unsigned long long full_size=nrows*ncols*SizeOfType(ctype);
+     unsigned long long used_size=start_metadata-HEADER_SIZE;
+     out << "Binary data size:   " <<  used_size << " bytes, which is " << 100.0*float(used_size)/float(full_size) << "% of the full matrix size.\n";
  }
  
  if (fres != "")
