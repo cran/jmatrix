@@ -31,11 +31,11 @@ JMatrixSetDebug <- function(deb = TRUE) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[,3]
-#' vf<-GetJCol("Rfullfloat.bin",3)
+#' vf<-GetJCol(tmpfile1,3)
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJCol <- function(fname, ncol) {
     .Call(`_jmatrix_GetJCol`, fname, ncol)
@@ -52,11 +52,10 @@ GetJCol <- function(fname, ncol) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' Rf[,c(1,4)]
-#' vc<-GetJManyCols("Rfullfloat.bin",c(1,4))
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
+#' vc<-GetJManyCols(tmpfile1,c(1,4))
 #' vc
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJManyCols <- function(fname, extcols) {
     .Call(`_jmatrix_GetJManyCols`, fname, extcols)
@@ -73,11 +72,11 @@ GetJManyCols <- function(fname, extcols) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[,"c"]
-#' vf<-GetJColByName("Rfullfloat.bin","c")
+#' vf<-GetJColByName(tmpfile1,"c")
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJColByName <- function(fname, colname) {
     .Call(`_jmatrix_GetJColByName`, fname, colname)
@@ -88,42 +87,20 @@ GetJColByName <- function(fname, colname) {
 #' Returns (as a R numeric matrix) the columns with the requested column names from the matrix contained in a jmatrix binary file
 #'
 #' @param fname        String with the file name that contains the binary data.
-#' @param extcolnames  A numeric vector with the names of the columns to be extracted. If the binary file has no column names, or _any_ of the column names is not present, an empty matrix is returned.
+#' @param extcolnames  A vector of RStrings with the names of the columns to be extracted. If the binary file has no column names, or _any_ of the column names is not present, an empty matrix is returned.
 #' @return             A numeric matrix with the values of elements in the requested columns
 #' @examples
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[,c(1,4)]
-#' vf<-GetJManyColsByNames("Rfullfloat.bin",c("a","d"))
+#' vf<-GetJManyColsByNames(tmpfile1,c("a","d"))
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJManyColsByNames <- function(fname, extcolnames) {
     .Call(`_jmatrix_GetJManyColsByNames`, fname, extcolnames)
-}
-
-#' GetSubdiag
-#' 
-#' Takes a symmetric matrix and returns a vector with all its elements under the main diagonal (without those at the diagonal itself)
-#' Done as an instrumental function to check the PAM in package cluster. To be removed in final version of the package.
-#'
-#' @param    fname The name of the file with the dissimilarity matrix in jmatrix binary format.
-#' @return   The vector with the values under the main diagonal, sorted by columns (i.e.: m(2,1) .. m(n,1), m(3,2)..m(n,2),..., m(n-1,n))
-#' @examples
-#' Rns <- matrix(runif(49),nrow=7)
-#' Rsym <- 0.5*(Rns+t(Rns))
-#' rownames(Rsym) <- c("A","B","C","D","E","F","G")
-#' colnames(Rsym) <- c("a","b","c","d","e","f","g")
-#' JWriteBin(Rsym,"Rsymfloat.bin",dtype="float",dmtype="symmetric")
-#' d<-GetSubdiag("Rsymfloat.bin")
-#' Rsym
-#' d
-#' file.remove("Rsymfloat.bin")
-#' @export
-GetSubdiag <- function(fname) {
-    .Call(`_jmatrix_GetSubdiag`, fname)
 }
 
 #' GetJRow
@@ -137,11 +114,11 @@ GetSubdiag <- function(fname) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[3,]
-#' vf<-GetJRow("Rfullfloat.bin",3)
+#' vf<-GetJRow(tmpfile1,3)
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJRow <- function(fname, nrow) {
     .Call(`_jmatrix_GetJRow`, fname, nrow)
@@ -158,11 +135,11 @@ GetJRow <- function(fname, nrow) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[c(1,4),]
-#' vc<-GetJManyRows("Rfullfloat.bin",c(1,4))
+#' vc<-GetJManyRows(tmpfile1,c(1,4))
 #' vc
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJManyRows <- function(fname, extrows) {
     .Call(`_jmatrix_GetJManyRows`, fname, extrows)
@@ -179,11 +156,11 @@ GetJManyRows <- function(fname, extrows) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf["C",]
-#' vf<-GetJRowByName("Rfullfloat.bin","C")
+#' vf<-GetJRowByName(tmpfile1,"C")
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJRowByName <- function(fname, rowname) {
     .Call(`_jmatrix_GetJRowByName`, fname, rowname)
@@ -194,17 +171,17 @@ GetJRowByName <- function(fname, rowname) {
 #' Returns (as a R numeric matrix) the rows with the requested row names from the matrix contained in a jmatrix binary file
 #'
 #' @param fname        String with the file name that contains the binary data.
-#' @param extrownames  A numeric vector with the names of the rows to be extracted. If the binary file has no row names, or _any_ of the row names is not present, an empty matrix is returned.
+#' @param extrownames  A vector of RStrings with the names of the rows to be extracted. If the binary file has no row names, or _any_ of the row names is not present, an empty matrix is returned.
 #' @return             A numeric matrix with the values of elements in the requested rows
 #' @examples
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' Rf[c("A","C"),]
-#' vf<-GetJManyRowsByNames("Rfullfloat.bin",c("A","C"))
+#' vf<-GetJManyRowsByNames(tmpfile1,c("A","C"))
 #' vf
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJManyRowsByNames <- function(fname, extrownames) {
     .Call(`_jmatrix_GetJManyRowsByNames`, fname, extrownames)
@@ -221,9 +198,9 @@ GetJManyRowsByNames <- function(fname, extrownames) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' JMatInfo("Rfullfloat.bin")
-#' file.remove("Rfullfloat.bin")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
+#' JMatInfo(tmpfile1)
 #' @export
 JMatInfo <- function(fname, fres = "") {
     invisible(.Call(`_jmatrix_JMatInfo`, fname, fres))
@@ -239,10 +216,10 @@ JMatInfo <- function(fname, fres = "") {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' rn<-GetJRowNames("Rfullfloat.bin")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
+#' rn<-GetJRowNames(tmpfile1)
 #' rn
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJRowNames <- function(fname) {
     .Call(`_jmatrix_GetJRowNames`, fname)
@@ -253,15 +230,15 @@ GetJRowNames <- function(fname) {
 #' Returns a R StringVector with the column names of a matrix stored in the binary format of package jmatrix, if it has them stored.
 #'
 #' @param fname  String with the file name that contains the binary data.
-#' @return A R StringVector with the column names, or the empty vector if the binaryfile has no row column names as metadata.
+#' @return A R StringVector with the column names, or the empty vector if the binaryfile has no column names as metadata.
 #' @examples
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' cn<-GetJColNames("Rfullfloat.bin")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
+#' cn<-GetJColNames(tmpfile1)
 #' cn
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJColNames <- function(fname) {
     .Call(`_jmatrix_GetJColNames`, fname)
@@ -274,16 +251,16 @@ GetJColNames <- function(fname) {
 #' @param fname  String with the file name that contains the binary data.
 #' @return N["rownames","colnames"]: A list with two elements named rownames and colnames which are R StringVectors.
 #'         If the binary file has no row or column names as metadata BOTH will be returned as empty vectors, even if one of them exists.
-#'         If you want to extract only one, use either GetBinRowNames or GetBinColNames, as appropriate.
+#'         If you want to extract only one, use either GetJRowNames or GetJColNames, as appropriate.
 #' @examples
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' N<-GetJNames("Rfullfloat.bin")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
+#' N<-GetJNames(tmpfile1)
 #' N["rownames"]
 #' N["colnames"]
-#' file.remove("Rfullfloat.bin")
 #' @export
 GetJNames <- function(fname) {
     .Call(`_jmatrix_GetJNames`, fname)
@@ -314,8 +291,8 @@ GetJNames <- function(fname) {
 #' Rf <- matrix(runif(48),nrow=6)
 #' rownames(Rf) <- c("A","B","C","D","E","F")
 #' colnames(Rf) <- c("a","b","c","d","e","f","g","h")
-#' JWriteBin(Rf,"Rfullfloat.bin",dtype="float",dmtype="full",comment="Full matrix of floats")
-#' file.remove("Rfullfloat.bin")
+#' tmpfile1=paste0(tempdir(),"/Rfullfloat.bin")
+#' JWriteBin(Rf,tmpfile1,dtype="float",dmtype="full",comment="Full matrix of floats")
 #' @export
 JWriteBin <- function(M, fname, dtype = "float", dmtype = "full", comment = "") {
     invisible(.Call(`_jmatrix_JWriteBin`, M, fname, dtype, dmtype, comment))

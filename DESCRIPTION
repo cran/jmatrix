@@ -2,8 +2,8 @@ Package: jmatrix
 Type: Package
 Title: Read from/Write to Disk Matrices with any Data Type in a Binary
         Format
-Version: 1.1
-Date: 2022-10-30
+Version: 1.4
+Date: 2023-06-20
 Author: Juan Domingo [aut, cre] (<https://orcid.org/0000-0003-4728-6256>),
   Guillermo Ayala [ctb] (<https://orcid.org/0000-0002-6231-2865>),
   Spanish Ministry of Science and Innovation, MCIN/AEI
@@ -24,11 +24,11 @@ Description: A mainly instrumental package meant to allow other packages whose c
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.8), memuse (>= 4.2.1)
 LinkingTo: Rcpp
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Encoding: UTF-8
 Suggests: knitr
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2022-11-09 11:58:48 UTC; jdomingo
+Packaged: 2023-06-21 23:29:35 UTC; jdomingo
 Repository: CRAN
-Date/Publication: 2022-11-16 14:30:02 UTC
+Date/Publication: 2023-06-22 17:40:02 UTC

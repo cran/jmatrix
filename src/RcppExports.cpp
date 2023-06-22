@@ -69,17 +69,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// GetSubdiag
-Rcpp::NumericVector GetSubdiag(std::string fname);
-RcppExport SEXP _jmatrix_GetSubdiag(SEXP fnameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type fname(fnameSEXP);
-    rcpp_result_gen = Rcpp::wrap(GetSubdiag(fname));
-    return rcpp_result_gen;
-END_RCPP
-}
 // GetJRow
 Rcpp::NumericVector GetJRow(std::string fname, int nrow);
 RcppExport SEXP _jmatrix_GetJRow(SEXP fnameSEXP, SEXP nrowSEXP) {
@@ -193,7 +182,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_jmatrix_GetJManyCols", (DL_FUNC) &_jmatrix_GetJManyCols, 2},
     {"_jmatrix_GetJColByName", (DL_FUNC) &_jmatrix_GetJColByName, 2},
     {"_jmatrix_GetJManyColsByNames", (DL_FUNC) &_jmatrix_GetJManyColsByNames, 2},
-    {"_jmatrix_GetSubdiag", (DL_FUNC) &_jmatrix_GetSubdiag, 1},
     {"_jmatrix_GetJRow", (DL_FUNC) &_jmatrix_GetJRow, 2},
     {"_jmatrix_GetJManyRows", (DL_FUNC) &_jmatrix_GetJManyRows, 2},
     {"_jmatrix_GetJRowByName", (DL_FUNC) &_jmatrix_GetJRowByName, 2},
