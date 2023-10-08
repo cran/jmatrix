@@ -11,6 +11,36 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// CsvToJMat
+void CsvToJMat(std::string ifname, std::string ofname, std::string mtype, char csep, std::string ctype, std::string valuetype, bool transpose, std::string comment);
+RcppExport SEXP _jmatrix_CsvToJMat(SEXP ifnameSEXP, SEXP ofnameSEXP, SEXP mtypeSEXP, SEXP csepSEXP, SEXP ctypeSEXP, SEXP valuetypeSEXP, SEXP transposeSEXP, SEXP commentSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type ifname(ifnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type ofname(ofnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type mtype(mtypeSEXP);
+    Rcpp::traits::input_parameter< char >::type csep(csepSEXP);
+    Rcpp::traits::input_parameter< std::string >::type ctype(ctypeSEXP);
+    Rcpp::traits::input_parameter< std::string >::type valuetype(valuetypeSEXP);
+    Rcpp::traits::input_parameter< bool >::type transpose(transposeSEXP);
+    Rcpp::traits::input_parameter< std::string >::type comment(commentSEXP);
+    CsvToJMat(ifname, ofname, mtype, csep, ctype, valuetype, transpose, comment);
+    return R_NilValue;
+END_RCPP
+}
+// JMatToCsv
+void JMatToCsv(std::string ifile, std::string csvfile, char csep, bool withquotes);
+RcppExport SEXP _jmatrix_JMatToCsv(SEXP ifileSEXP, SEXP csvfileSEXP, SEXP csepSEXP, SEXP withquotesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type ifile(ifileSEXP);
+    Rcpp::traits::input_parameter< std::string >::type csvfile(csvfileSEXP);
+    Rcpp::traits::input_parameter< char >::type csep(csepSEXP);
+    Rcpp::traits::input_parameter< bool >::type withquotes(withquotesSEXP);
+    JMatToCsv(ifile, csvfile, csep, withquotes);
+    return R_NilValue;
+END_RCPP
+}
 // JMatrixSetDebug
 void JMatrixSetDebug(bool deb);
 RcppExport SEXP _jmatrix_JMatrixSetDebug(SEXP debSEXP) {
@@ -18,6 +48,19 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type deb(debSEXP);
     JMatrixSetDebug(deb);
+    return R_NilValue;
+END_RCPP
+}
+// FilterJMatByName
+void FilterJMatByName(std::string fname, Rcpp::StringVector Gn, std::string filname, std::string namesat);
+RcppExport SEXP _jmatrix_FilterJMatByName(SEXP fnameSEXP, SEXP GnSEXP, SEXP filnameSEXP, SEXP namesatSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fname(fnameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type Gn(GnSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filname(filnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type namesat(namesatSEXP);
+    FilterJMatByName(fname, Gn, filname, namesat);
     return R_NilValue;
 END_RCPP
 }
@@ -177,7 +220,10 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_jmatrix_CsvToJMat", (DL_FUNC) &_jmatrix_CsvToJMat, 8},
+    {"_jmatrix_JMatToCsv", (DL_FUNC) &_jmatrix_JMatToCsv, 4},
     {"_jmatrix_JMatrixSetDebug", (DL_FUNC) &_jmatrix_JMatrixSetDebug, 1},
+    {"_jmatrix_FilterJMatByName", (DL_FUNC) &_jmatrix_FilterJMatByName, 4},
     {"_jmatrix_GetJCol", (DL_FUNC) &_jmatrix_GetJCol, 2},
     {"_jmatrix_GetJManyCols", (DL_FUNC) &_jmatrix_GetJManyCols, 2},
     {"_jmatrix_GetJColByName", (DL_FUNC) &_jmatrix_GetJColByName, 2},
