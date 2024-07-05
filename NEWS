@@ -17,3 +17,9 @@ Version 1.5 [2023-09-07]
 * Added functions to read/write to/from .csv or .tsv file to create jmatrix files
 * Added function to filter rows or columns by their names directly from jmatrix files to create a new jmatrix file 
 * Added possibility of reading symmetric matrices from .csv or .tsv files
+
+Version 1.5.1 [2023-10-12]
+* Read/write to/from .csv or .tsv checked to avoid strange behaviours when .csv has no row and/or column names.
+
+Version 1.5.2 [2024-07-05]
+* Change in a header to void new warning in C++20 due to the use of template in a header.

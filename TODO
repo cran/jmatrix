@@ -1,0 +1,2 @@
+Corregir en la siguiente versión la escritura de .csv en SymmetricMatrix::WriteCsv.
+Mirar el de la biblioteca jmatlib
